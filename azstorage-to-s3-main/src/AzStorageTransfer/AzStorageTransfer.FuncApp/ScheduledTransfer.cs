@@ -45,6 +45,7 @@ namespace AzStorageTransfer.FuncApp
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
             var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: false);
+            log.LogInformation("On line 48");
             foreach (CloudBlockBlob item in blobItems)
             {
                 log.LogInformation(String.Format("{0} | {1}", item["Uri"], item["StorageUri"]);
