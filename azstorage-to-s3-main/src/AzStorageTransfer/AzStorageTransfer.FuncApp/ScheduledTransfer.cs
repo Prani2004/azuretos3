@@ -47,6 +47,7 @@ namespace AzStorageTransfer.FuncApp
             var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: false);
             foreach (CloudBlockBlob item in blobItems)
             {
+                log.LogInformation(String.Format("{0} | {1}", item["Uri"], item["StorageUri"]);
                 await TrasferAndArchiveBlobAsync(item, log);
             }
         }
