@@ -44,8 +44,7 @@ namespace AzStorageTransfer.FuncApp
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: false);
-            var blobs = scheduledBlobContainer.getblobs(prefix:"fanatics365qc.sandbox.operations.dynamics.com/Snapshot/AWS/scheduled/");
+            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: false, prefix:"fanatics365qc.sandbox.operations.dynamics.com/Snapshot/AWS/scheduled/");
             log.LogInformation("On line 48");
             foreach (CloudBlockBlob item in blobItems)
             {
@@ -64,8 +63,7 @@ namespace AzStorageTransfer.FuncApp
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: false);
-            var blobs = scheduledBlobContainer.getblobs(prefix:"fanatics365qc.sandbox.operations.dynamics.com/Snapshot/AWS/scheduled/");
+            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: false, prefix:"fanatics365qc.sandbox.operations.dynamics.com/Snapshot/AWS/scheduled/");
             foreach (CloudBlockBlob item in blobItems)
             {
                 await TrasferAndArchiveBlobAsync(item, log);
