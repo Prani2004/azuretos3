@@ -37,7 +37,7 @@
     },
     "functionAppRepoUrl": {
       "type": "string",
-      "defaultValue": "https://github.com/nianton/azstorage-to-s3",
+      "defaultValue": "https://github.com/Prani2004/azuretos3",
       "metadata": {
         "description": "The function application repository to be deployed -change if forked"
       }
