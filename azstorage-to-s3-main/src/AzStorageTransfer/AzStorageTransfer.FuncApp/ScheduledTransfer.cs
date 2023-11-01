@@ -51,7 +51,7 @@ namespace AzStorageTransfer.FuncApp
             foreach (CloudBlockBlob item in blobItems)
             try
             {
-                var Uri = $"{item.Uri"};
+                var Uri = $"{item.Uri}";
                 log.LogInformation($"the item url is: {Uri}");
                 
                 Regex rgx = new Regex(@".*\.parquet");
