@@ -47,9 +47,12 @@ namespace AzStorageTransfer.FuncApp
             var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix:"fanatics365qc.sandbox.operations.dynamics.com/Snapshot/AWS/scheduled/");
             
             foreach (CloudBlockBlob item in blobItems)
+            try
             {
                 await TrasferAndArchiveBlobAsync(item, log);
             }
+            catch (RequestFailedException e)
+            {log.LogInformation($"failed on 55 - {e}")}
         }
 
         /// <summary>
