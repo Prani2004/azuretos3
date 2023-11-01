@@ -65,7 +65,7 @@ namespace AzStorageTransfer.FuncApp
             }
             catch (Exception e)
             {
-                log.LogInformation($"failed on 55 - {e.Message}");
+                log.LogInformation($"failed on 68 - {e.Message}");
             }
         }
 
