@@ -85,7 +85,9 @@ namespace AzStorageTransfer.FuncApp
             }
 
             // Copy file to archive container
+            log.LogInformation($"Starting Archive process..");
             var archiveBlob = this.archiveBlobContainer.GetBlockBlobReference(cloudBlob.Name);
+            log.LogInformation($"Starting Copy Async..");
             var copyResult = await archiveBlob.StartCopyAsync(cloudBlob);
             log.LogInformation($"File '{cloudBlob.Name}' copied to container: {Config.ArchiveContainer}.");
 
