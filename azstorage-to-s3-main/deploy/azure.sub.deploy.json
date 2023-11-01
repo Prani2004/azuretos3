@@ -20,6 +20,10 @@
       "type": "string",
       "defaultValue": "dev"
     },
+    "prefix": {
+      "type": "string",
+      "defaultValue": "prefix"
+    },
     "scheduledContainerName": {
       "type": "string",
       "defaultValue": "scheduled"
