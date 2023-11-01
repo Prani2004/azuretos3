@@ -11,6 +11,7 @@
     "AwsAccessKey": "ACCESS_KEY",
     "AwsSecretKey": "SECRET_KEY",
     "AwsBucketName": "BUCKET_NAME",
-    "AwsRegion": "eu-central-1"
+    "AwsRegion": "eu-central-1",
+    "prefix": "prefix"
   }
 }
