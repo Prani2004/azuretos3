@@ -9,7 +9,6 @@ namespace AzStorageTransfer.FuncApp
         public static string ArchiveContainer { get; } = Environment.GetEnvironmentVariable(nameof(ArchiveContainer));
         public static string LiveContainer { get; } = Environment.GetEnvironmentVariable(nameof(LiveContainer));
         public static string ScheduledContainer { get; } = Environment.GetEnvironmentVariable(nameof(ScheduledContainer));
-        public static string Prefix { get; } = Environment.GetEnvironmentVariable(nameof(prefix));
 
         public static class Aws
         {
