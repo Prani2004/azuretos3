@@ -49,16 +49,17 @@ namespace AzStorageTransfer.FuncApp
             foreach (CloudBlockBlob item in blobItems)
             try
             {
-                log.LogInformation($"the item url is: {item.Uri}");
+                var Uri = nameof(item.Uri);
+                log.LogInformation($"the item url is: {Uri}");
                 
                 Regex rgx = new Regex(@".*\.parquet");
-                if (rgx.IsMatch(item.Uri))
+                if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
                 }
                 else
                 {
-                    log.LogInformation($"Not going to transfer and archive this url: {item.Uri}");
+                    log.LogInformation($"Not going to transfer and archive this url: {Uri}");
                 }
 
             }
