@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
+// using System.Text.RegularExpressions;
 
 
 namespace AzStorageTransfer.FuncApp
@@ -54,15 +54,15 @@ namespace AzStorageTransfer.FuncApp
                 var Uri = nameof(item.Uri);
                 log.LogInformation($"the item url is: {Uri}");
                 
-                Regex rgx = new Regex(@".*\.parquet");
-                if (rgx.IsMatch(Uri))
-                {
-                    await TrasferAndArchiveBlobAsync(item, log);
-                }
-                else
-                {
-                    log.LogInformation($"Not going to transfer and archive this url: {Uri}");
-                }
+                // Regex rgx = new Regex(@".*\.parquet");
+                // if (rgx.IsMatch(Uri))
+                // {
+                await TrasferAndArchiveBlobAsync(item, log);
+                // }
+                // else
+                // {
+                //     log.LogInformation($"Not going to transfer and archive this url: {Uri}");
+                // }
 
             }
             catch (Exception e)
