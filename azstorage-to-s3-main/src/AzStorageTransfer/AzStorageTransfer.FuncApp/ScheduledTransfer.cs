@@ -51,8 +51,10 @@ namespace AzStorageTransfer.FuncApp
             {
                 await TrasferAndArchiveBlobAsync(item, log);
             }
-            catch (RequestFailedException e)
-            {log.LogInformation($"failed on 55 - {e}")}
+            catch (Exception e)
+            {
+                log.LogInformation($"failed on 55 - {e.Message}");
+            }
         }
 
         /// <summary>
