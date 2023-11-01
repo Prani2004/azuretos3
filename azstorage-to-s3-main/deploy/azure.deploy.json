@@ -21,13 +21,6 @@
         "description": "Container name to periodically transfer"
       }
     },
-    "prefix": {
-      "type": "string",
-      "defaultValue": "prefix",
-      "metadata": {
-        "description": "folder prefix"
-      }
-    },
     "archiveContainerName": {
       "type": "string",
       "defaultValue": "archive",

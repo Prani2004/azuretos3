@@ -5,8 +5,6 @@ param environment string = 'dev'
 @description('Container name to periodically transfer')
 param scheduledContainerName string = 'scheduled'
 
-@description('Prefix name')
-param prefix string = 'prefix'
 
 @description('Container to move the files from the scheduled run')
 param archiveContainerName string = 'archive'

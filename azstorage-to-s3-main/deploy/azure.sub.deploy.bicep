@@ -5,7 +5,6 @@ param resourceGroupName string
 param location string = 'westeurope'
 param project string = 'blob2s3'
 param environment string = 'dev'
-param prefix string = 'prefix'
 
 param scheduledContainerName string = 'scheduled'
 param archiveContainerName string = 'archive'
