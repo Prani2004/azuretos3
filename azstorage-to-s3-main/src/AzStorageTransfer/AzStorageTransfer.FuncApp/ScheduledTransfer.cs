@@ -38,8 +38,6 @@ namespace AzStorageTransfer.FuncApp
             this.cloudBlobClient = CloudStorageAccount.Parse(Config.DataStorageConnection).CreateCloudBlobClient();
             this.scheduledBlobContainer = this.cloudBlobClient.GetContainerReference(Config.ScheduledContainer);
             this.archiveBlobContainer = this.cloudBlobClient.GetContainerReference(Config.ArchiveContainer);
-            this.Prefix = this.cloudBlobClient.GetContainerReference(Config.Prefix);
-            this.FileExt = this.cloudBlobClient.GetContainerReference(Config.FileExt);
         }
 
         /// <summary>
@@ -50,7 +48,7 @@ namespace AzStorageTransfer.FuncApp
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Prefix);
+            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.Prefix);
             
             foreach (CloudBlockBlob item in blobItems)
             try
@@ -58,7 +56,7 @@ namespace AzStorageTransfer.FuncApp
                 var Uri = $"{item.Uri}";
                 log.LogInformation($"the item url is: {Uri}");
                 
-                Regex rgx = new Regex(@".*\.parquet");
+                Regex rgx = new Regex(@".*\.{Config.FileExt}");
                 if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
@@ -85,14 +83,14 @@ namespace AzStorageTransfer.FuncApp
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Prefix);
+            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.Prefix);
             foreach (CloudBlockBlob item in blobItems)
             try
             {
                 var Uri = $"{item.Uri}";
                 log.LogInformation($"the item url is: {Uri}");
                 
-                Regex rgx = new Regex(@".*\.{FileExt}");
+                Regex rgx = new Regex(@".*\.{Config.FileExt}");
                 if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
