@@ -30,6 +30,7 @@ namespace AzStorageTransfer.FuncApp
         private readonly CloudBlobContainer scheduledBlobContainer;
         private readonly CloudBlobContainer archiveBlobContainer;
         private readonly CloudBlobContainer Prefix;
+        private readonly CloudBlobContainer FileExt;
 
         public ScheduledTransfer(IAmazonS3 amazonS3)
         {
@@ -38,6 +39,7 @@ namespace AzStorageTransfer.FuncApp
             this.scheduledBlobContainer = this.cloudBlobClient.GetContainerReference(Config.ScheduledContainer);
             this.archiveBlobContainer = this.cloudBlobClient.GetContainerReference(Config.ArchiveContainer);
             this.Prefix = this.cloudBlobClient.GetContainerReference(Config.Prefix);
+            this.FileExt = this.cloudBlobClient.GetContainerReference(Config.FileExt);
         }
 
         /// <summary>
@@ -48,7 +50,7 @@ namespace AzStorageTransfer.FuncApp
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.Prefix);
+            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Prefix);
             
             foreach (CloudBlockBlob item in blobItems)
             try
@@ -56,7 +58,7 @@ namespace AzStorageTransfer.FuncApp
                 var Uri = $"{item.Uri}";
                 log.LogInformation($"the item url is: {Uri}");
                 
-                Regex rgx = new Regex(@".*\.{Config.FileExt}");
+                Regex rgx = new Regex(@".*\.{FileExt}");
                 if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
@@ -83,14 +85,14 @@ namespace AzStorageTransfer.FuncApp
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.Prefix);
+            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Prefix);
             foreach (CloudBlockBlob item in blobItems)
             try
             {
                 var Uri = $"{item.Uri}";
                 log.LogInformation($"the item url is: {Uri}");
                 
-                Regex rgx = new Regex(@".*\.{Config.FileExt}");
+                Regex rgx = new Regex(@".*\.{FileExt}");
                 if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
