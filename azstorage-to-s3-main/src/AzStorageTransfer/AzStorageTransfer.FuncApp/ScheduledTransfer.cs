@@ -58,7 +58,7 @@ namespace AzStorageTransfer.FuncApp
 
                 var FileExt = $"{Config.FileExt}";
                 
-                Regex rgx = new Regex(@".*\.{FileExt}");
+                Regex rgx = new Regex($".*\.{FileExt}");
                 if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
@@ -94,7 +94,7 @@ namespace AzStorageTransfer.FuncApp
 
                 var FileExt = $"{Config.FileExt}";
                 
-                Regex rgx = new Regex(@".*\.{FileExt}");
+                Regex rgx = new Regex($".*\.{FileExt}");
                 if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
