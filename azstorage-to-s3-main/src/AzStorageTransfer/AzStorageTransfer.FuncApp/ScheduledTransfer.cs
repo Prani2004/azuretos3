@@ -29,7 +29,7 @@ namespace AzStorageTransfer.FuncApp
         private readonly CloudBlobClient cloudBlobClient;
         private readonly CloudBlobContainer scheduledBlobContainer;
         private readonly CloudBlobContainer archiveBlobContainer;
-        private readonly CloudBlobContainer Prefix;
+        private readonly CloudBlobContainer ScheduledVirtualPath;
         private readonly CloudBlobContainer FileExt;
 
         public ScheduledTransfer(IAmazonS3 amazonS3)
@@ -48,7 +48,7 @@ namespace AzStorageTransfer.FuncApp
         {
             log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
-            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.Prefix);
+            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.ScheduledVirtualPath);
             
             foreach (CloudBlockBlob item in blobItems)
             try
@@ -83,7 +83,7 @@ namespace AzStorageTransfer.FuncApp
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
-            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.Prefix);
+            var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.ScheduledVirtualPath);
             foreach (CloudBlockBlob item in blobItems)
             try
             {
