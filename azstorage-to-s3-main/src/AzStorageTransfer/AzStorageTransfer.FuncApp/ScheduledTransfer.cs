@@ -37,7 +37,7 @@ namespace AzStorageTransfer.FuncApp
             this.cloudBlobClient = CloudStorageAccount.Parse(Config.DataStorageConnection).CreateCloudBlobClient();
             this.scheduledBlobContainer = this.cloudBlobClient.GetContainerReference(Config.ScheduledContainer);
             this.archiveBlobContainer = this.cloudBlobClient.GetContainerReference(Config.ArchiveContainer);
-            this.Prefix = this.CloudblobClient.GetContainerReference(Config.Prefix);
+            this.Prefix = this.cloudblobClient.GetContainerReference(Config.Prefix);
         }
 
         /// <summary>
