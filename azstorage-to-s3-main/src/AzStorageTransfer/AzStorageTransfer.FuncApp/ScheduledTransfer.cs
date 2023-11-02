@@ -53,26 +53,11 @@ namespace AzStorageTransfer.FuncApp
             foreach (CloudBlockBlob item in blobItems)
             try
             {
-                var Uri = $"{item.Uri}";
-                log.LogInformation($"the item url is: {Uri}");
-
-                var FileExt = $"{Config.FileExt}";
-                var rgxText = @$".*\.{FileExt}";
-                log.LogInformation(rgxText);
-                Regex rgx = new Regex(rgxText);
-                if (rgx.IsMatch(Uri))
-                {
                     await TrasferAndArchiveBlobAsync(item, log);
-                }
-                else
-                {
-                    log.LogInformation($"Not going to transfer and archive this url: {Uri}");
-                }
-
             }
             catch (Exception e)
             {
-                log.LogInformation($"failed on 68 - {e.Message}");
+                log.LogInformation($"failed on 60 - {e.Message}");
             }
         }
 
@@ -89,27 +74,12 @@ namespace AzStorageTransfer.FuncApp
             var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.ScheduledVirtualPath);
             foreach (CloudBlockBlob item in blobItems)
             try
-            {
-                var Uri = $"{item.Uri}";
-                log.LogInformation($"the item url is: {Uri}");
-
-                var FileExt = $"{Config.FileExt}";
-                var rgxText = @$".*\.{FileExt}";
-                Regex rgx = new Regex(rgxText);
-                
-                if (rgx.IsMatch(Uri))
-                {
+            {     
                     await TrasferAndArchiveBlobAsync(item, log);
-                }
-                else
-                {
-                    log.LogInformation($"Not going to transfer and archive this url: {Uri}");
-                }
-
             }
             catch (Exception e)
             {
-                log.LogInformation($"failed on 68 - {e.Message}");
+                log.LogInformation($"failed on 82 - {e.Message}");
             }
 
             return new OkResult();
@@ -119,25 +89,81 @@ namespace AzStorageTransfer.FuncApp
         {
             using (var ms = new MemoryStream())
             {
+                // Get the URI of the blob
+                var Uri = $"{cloudBlob.Uri}";
+                log.LogInformation($"the item url is: {Uri}");
+
+                // Get the file extension required for transfer
+                var FileExt = $"{Config.FileExt}";
+
+                // Generate Regex
+                var rgxText = @$".*\.{FileExt}";
+                log.LogInformation(rgxText);
+                Regex rgx = new Regex(rgxText);
+
+                // Only send files that match the configured file extension
+                if (rgx.IsMatch(Uri))
+                {
+                
                 // Download to stream
-                await cloudBlob.DownloadToStreamAsync(ms);
-                ms.Seek(0, SeekOrigin.Begin);
+                try
+                {
+                    await cloudBlob.DownloadToStreamAsync(ms);
+                    ms.Seek(0, SeekOrigin.Begin);
+                }
+                catch (Exception e)
+                {
+                    log.LogInformation($"failed downloading blob to stream - {e.Message}");
+                }
+                
 
                 // Transfer to Amazon S3
-                await this.amazonS3.UploadObjectFromStreamAsync(Config.Aws.BucketName, cloudBlob.Name, ms, new Dictionary<string, object>());
-                log.LogInformation($"File '{cloudBlob.Name}' uploaded to S3.");
+                try
+                {
+                    await this.amazonS3.UploadObjectFromStreamAsync(Config.Aws.BucketName, cloudBlob.Name, ms, new Dictionary<string, object>());
+                    log.LogInformation($"File '{cloudBlob.Name}' uploaded to S3.");
+                }
+                catch (Exception e)
+                {
+                    log.LogInformation($"failed transfering blob to S3 - {e.Message}");
+                }
+                
+
+                // Copy file to archive container
+                log.LogInformation($"Starting Archive process..");
+                var archiveBlob = this.archiveBlobContainer.GetBlockBlobReference(cloudBlob.Name);
+                log.LogInformation($"Starting Copy Async..");
+                try
+                {
+                    var copyResult = await archiveBlob.StartCopyAsync(cloudBlob);
+                    log.LogInformation($"File '{cloudBlob.Name}' copied to container: {Config.ArchiveContainer}.");
+                }
+                catch (Exception e)
+                {
+                    log.LogInformation($"failed copying file to archive container - {e.Message}");
+                }
+
+                // Delete file from scheduled container
+                try
+                {
+                    await cloudBlob.DeleteAsync();
+                    log.LogInformation($"File '{cloudBlob.Name}' deleted from container: {Config.ScheduledContainer}.");
+                }
+                catch (Exception e)
+                {
+                    log.LogInformation($"failed deleting file from scheduled container - {e.Message}");
+                }
+                
+
+                }
+                else
+                {
+                    log.LogInformation($"Not going to transfer and archive this url: {Uri}");
+                }
+                
             }
 
-            // Copy file to archive container
-            log.LogInformation($"Starting Archive process..");
-            var archiveBlob = this.archiveBlobContainer.GetBlockBlobReference(cloudBlob.Name);
-            log.LogInformation($"Starting Copy Async..");
-            var copyResult = await archiveBlob.StartCopyAsync(cloudBlob);
-            log.LogInformation($"File '{cloudBlob.Name}' copied to container: {Config.ArchiveContainer}.");
-
-            // Delete file from scheduled container
-            await cloudBlob.DeleteAsync();
-            log.LogInformation($"File '{cloudBlob.Name}' deleted from container: {Config.ScheduledContainer}.");
+            
         }
     }
 }
