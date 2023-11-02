@@ -58,6 +58,7 @@ namespace AzStorageTransfer.FuncApp
 
                 var FileExt = $"{Config.FileExt}";
                 var rgxText = @$".*/.{FileExt}";
+                log.LogInformation(rgxText);
                 Regex rgx = new Regex(rgxText);
                 if (rgx.IsMatch(Uri))
                 {
