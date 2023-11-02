@@ -56,7 +56,7 @@ namespace AzStorageTransfer.FuncApp
                 var Uri = $"{item.Uri}";
                 log.LogInformation($"the item url is: {Uri}");
                 
-                Regex rgx = new Regex(@".*\.parquet");
+                Regex rgx = new Regex(@".*\.{Config.FileExt}");
                 if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
@@ -90,7 +90,7 @@ namespace AzStorageTransfer.FuncApp
                 var Uri = $"{item.Uri}";
                 log.LogInformation($"the item url is: {Uri}");
                 
-                Regex rgx = new Regex(@".*\.parquet");
+                Regex rgx = new Regex(@".*\.{Config.FileExt}");
                 if (rgx.IsMatch(Uri))
                 {
                     await TrasferAndArchiveBlobAsync(item, log);
