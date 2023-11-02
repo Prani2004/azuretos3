@@ -85,8 +85,25 @@ namespace AzStorageTransfer.FuncApp
             log.LogInformation("C# HTTP trigger function processed a request.");
             var blobItems = scheduledBlobContainer.ListBlobs(useFlatBlobListing: true, prefix: Config.Prefix);
             foreach (CloudBlockBlob item in blobItems)
+            try
             {
-                await TrasferAndArchiveBlobAsync(item, log);
+                var Uri = $"{item.Uri}";
+                log.LogInformation($"the item url is: {Uri}");
+                
+                Regex rgx = new Regex(@".*\.parquet");
+                if (rgx.IsMatch(Uri))
+                {
+                    await TrasferAndArchiveBlobAsync(item, log);
+                }
+                else
+                {
+                    log.LogInformation($"Not going to transfer and archive this url: {Uri}");
+                }
+
+            }
+            catch (Exception e)
+            {
+                log.LogInformation($"failed on 68 - {e.Message}");
             }
 
             return new OkResult();
