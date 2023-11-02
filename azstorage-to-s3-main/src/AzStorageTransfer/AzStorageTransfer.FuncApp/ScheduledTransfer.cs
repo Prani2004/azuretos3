@@ -29,7 +29,7 @@ namespace AzStorageTransfer.FuncApp
         private readonly CloudBlobClient cloudBlobClient;
         private readonly CloudBlobContainer scheduledBlobContainer;
         private readonly CloudBlobContainer archiveBlobContainer;
-        private readonly CloudBlobDirectory Prefix;
+        private readonly CloudBlobDictonary Prefix;
 
         public ScheduledTransfer(IAmazonS3 amazonS3)
         {
@@ -37,6 +37,7 @@ namespace AzStorageTransfer.FuncApp
             this.cloudBlobClient = CloudStorageAccount.Parse(Config.DataStorageConnection).CreateCloudBlobClient();
             this.scheduledBlobContainer = this.cloudBlobClient.GetContainerReference(Config.ScheduledContainer);
             this.archiveBlobContainer = this.cloudBlobClient.GetContainerReference(Config.ArchiveContainer);
+            this.Prefix = this.CloudblobClient.GetContainerReference(Config.Prefix);
         }
 
         /// <summary>
