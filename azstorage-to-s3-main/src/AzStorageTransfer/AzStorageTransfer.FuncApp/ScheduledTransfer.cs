@@ -29,7 +29,7 @@ namespace AzStorageTransfer.FuncApp
         private readonly CloudBlobClient cloudBlobClient;
         private readonly CloudBlobContainer scheduledBlobContainer;
         private readonly CloudBlobContainer archiveBlobContainer;
-        private readonly CloudBlobContainer Prefix;
+        private readonly CloudBlobDirectory Prefix;
 
         public ScheduledTransfer(IAmazonS3 amazonS3)
         {
