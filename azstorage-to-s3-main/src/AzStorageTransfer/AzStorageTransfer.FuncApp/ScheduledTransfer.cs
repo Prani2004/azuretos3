@@ -57,7 +57,7 @@ namespace AzStorageTransfer.FuncApp
                 log.LogInformation($"the item url is: {Uri}");
 
                 var FileExt = $"{Config.FileExt}";
-                var rgxText = @$".*/.{FileExt}";
+                var rgxText = @$".*\.{FileExt}";
                 log.LogInformation(rgxText);
                 Regex rgx = new Regex(rgxText);
                 if (rgx.IsMatch(Uri))
@@ -94,7 +94,7 @@ namespace AzStorageTransfer.FuncApp
                 log.LogInformation($"the item url is: {Uri}");
 
                 var FileExt = $"{Config.FileExt}";
-                var rgxText = @$".*/.{FileExt}";
+                var rgxText = @$".*\.{FileExt}";
                 Regex rgx = new Regex(rgxText);
                 
                 if (rgx.IsMatch(Uri))
