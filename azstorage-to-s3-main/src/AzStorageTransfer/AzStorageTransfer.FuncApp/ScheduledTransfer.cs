@@ -99,7 +99,7 @@ namespace AzStorageTransfer.FuncApp
                 // Generate Regex
                 var rgxText = @$".*\.{FileExt}";
                 
-                log.LogInformation($"Validating file type using regex pattern: {rgxText});
+                log.LogInformation($"Validating file type using regex pattern: {rgxText}");
                                    
                 Regex rgx = new Regex(rgxText);
 
