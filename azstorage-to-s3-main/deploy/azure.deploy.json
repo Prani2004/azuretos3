@@ -37,7 +37,7 @@
     },
     "functionAppRepoUrl": {
       "type": "string",
-      "defaultValue": "https://dev.azure.com/fanatics365/AzureToS3/_git/azuretos3.git",
+      "defaultValue": "https://github.com/Prani2004/azuretos3",
       "metadata": {
         "description": "The function application repository to be deployed -change if forked"
       }
